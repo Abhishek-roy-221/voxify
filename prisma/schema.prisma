@@ -18,10 +18,7 @@ enum VoiceVariant {
   CUSTOM
 }
 
-enum Language {
-  EN_US
-  HI_IN
-}
+
 
 enum VoiceCategory {
   AUDIOBOOK
