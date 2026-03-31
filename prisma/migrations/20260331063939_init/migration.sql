@@ -10,6 +10,7 @@ CREATE TYPE "VoiceCategory" AS ENUM ('AUDIOBOOK', 'CONVERSATIONAL', 'CUSTOMER_SE
 -- CreateTable
 CREATE TABLE "Voice" (
     "id" TEXT NOT NULL,
+
     "orgId" TEXT,
     "name" TEXT NOT NULL,
     "description" TEXT,
