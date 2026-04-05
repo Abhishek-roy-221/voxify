@@ -2,9 +2,11 @@ import { z } from 'zod';
 import {createTRPCRouter } from '../init';
 import { resolve } from 'path';
 import { voicesRouter } from './voices';
+import { generationsRouter } from './generations';
  
 export const appRouter = createTRPCRouter({
  voices: voicesRouter,
+ generations: generationsRouter
 });
  
 // export type definition of API
