@@ -1,6 +1,6 @@
 
 import { z } from "zod";
-
+import { polar } from "@/lib/polar";
 import { env } from "@/lib/env";
 import { TRPCError } from "@trpc/server";
 import { chatterbox } from "@/lib/chatterbox-client";
@@ -57,6 +57,26 @@ export const generationsRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
  
+      try {
+        const customerState = await polar.customers.getStateExternal({
+          externalId: ctx.orgId,
+        });
+        const hasActiveSubscription =
+          (customerState.activeSubscriptions ?? []).length > 0;
+        if (!hasActiveSubscription) {
+          throw new TRPCError({
+            code: "FORBIDDEN",
+            message: "SUBSCRIPTION_REQUIRED",
+          });
+        }
+      } catch (err) {
+        if (err instanceof TRPCError) throw err;
+        // Customer doesn't exist in Polar yet -> no subscription
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "SUBSCRIPTION_REQUIRED",
+        });
+      }
 
       const voice = await prisma.voice.findUnique({
         where: {
@@ -177,7 +197,21 @@ export const generationsRouter = createTRPCRouter({
         });
       }
 
-    
+     polar.events
+  .ingest({
+    events: [
+      {
+        name: "tts_generation",
+        externalCustomerId: ctx.orgId,
+        metadata: { characters: input.text.length },
+        timestamp: new Date(Date.now() - 5000), // ✅ fix error 1
+      },
+    ],
+  })
+  .catch((err) => {
+    console.error("[Polar] Event ingestion failed ❌", JSON.stringify(err, null, 2));
+  });
+
       return {
         id: generationId,
       };
