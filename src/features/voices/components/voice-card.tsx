@@ -39,17 +39,19 @@ interface VoiceCardProps {
 const regionNames = new Intl.DisplayNames(["en"], { type: "region" });
 
 function parseLanguage(locale: string) {
-  const [, country] = locale.split("-");
+  const [, countryRaw] = locale.split("-");
+  const country = countryRaw?.toUpperCase();
+
   if (!country) return { flag: "", region: locale };
 
-  const flag = [...country.toUpperCase()]
+  const flag = [...country]
     .map((c) => String.fromCodePoint(0x1f1e6 + c.charCodeAt(0) - 65))
     .join("");
 
   const region = regionNames.of(country) ?? country;
 
   return { flag, region };
-};
+}
 
 export function VoiceCard({ voice }: VoiceCardProps) {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -103,9 +105,13 @@ export function VoiceCard({ voice }: VoiceCardProps) {
         </p>
 
         <p className="flex items-center gap-1 text-xs">
-          <span className="shrink-0">{flag}</span>
-          <span className="truncate font-medium">{region}</span>
-        </p>
+  <img
+    src={`https://flagcdn.com/w20/${voice.language.split("-")[1]?.toLowerCase()}.png`}
+    alt="flag"
+    className="w-4 h-4 rounded-sm"
+  />
+  <span className="truncate font-medium">{region}</span>
+</p>
       </div>
 
       <div className="ml-1 flex shrink-0 items-center gap-1 lg:ml-3 lg:gap-2">

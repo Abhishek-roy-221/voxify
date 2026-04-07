@@ -3,10 +3,12 @@ import {createTRPCRouter } from '../init';
 import { resolve } from 'path';
 import { voicesRouter } from './voices';
 import { generationsRouter } from './generations';
+import { billingRouter } from './billing';
  
 export const appRouter = createTRPCRouter({
  voices: voicesRouter,
- generations: generationsRouter
+ generations: generationsRouter,
+ billing: billingRouter
 });
  
 // export type definition of API
