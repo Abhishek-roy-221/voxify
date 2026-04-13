@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎙️ Voxify
 
-## Getting Started
+**Voxify** is a full-stack AI-powered voice generation platform that enables teams and developers to generate, manage, and scale realistic speech using self-hosted text-to-speech models.
 
-First, run the development server:
+It combines **voice cloning, multi-tenant architecture, and usage-based billing** into a production-ready SaaS system.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 🚀 Features
+
+* 🎧 **Text-to-Speech Generation**
+  Generate high-quality, realistic audio using self-hosted AI models
+
+* 🧬 **Custom Voice Cloning**
+  Create unique voices via file upload or in-browser recording
+
+* 🏢 **Multi-Tenant Workspaces**
+  Organization-based access control using Clerk
+
+* 💳 **Usage-Based Billing**
+  Meter every generation with Polar integration
+
+* 📦 **Cloud Storage (S3-compatible)**
+  Store and manage audio via Cloudflare R2
+
+* 📊 **Interactive Waveform Playback**
+  Built with WaveSurfer.js for real-time audio interaction
+
+* ⚡ **Type-Safe Backend**
+  End-to-end type safety using tRPC + Zod
+
+---
+
+## 🧱 Tech Stack
+
+**Frontend**
+
+* Next.js 16
+* Tailwind CSS v4
+* shadcn/ui
+* WaveSurfer.js
+
+**Backend**
+
+* tRPC (type-safe APIs)
+* Node.js (Next.js API layer)
+
+**Database**
+
+* PostgreSQL
+* Prisma ORM
+
+**Infrastructure**
+
+* Cloudflare R2 (object storage)
+* Serverless GPU (FastAPI for model inference)
+
+**Auth & Multi-tenancy**
+
+* Clerk
+
+**Billing**
+
+* Polar (usage-based metering)
+
+---
+
+## ⚙️ Architecture Overview
+
+```
+User Input → tRPC API → Backend Validation → AI Model (GPU) → R2 Storage → Response 
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Flow Breakdown
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. User submits text input
+2. Input validated using Zod
+3. tRPC verifies organization & permissions
+4. Backend calls self-hosted Chatterbox model (FastAPI + GPU)
+5. Audio is generated and uploaded to Cloudflare R2
+6. Usage is metered via Polar
+7. Audio URL returned to frontend
+8. Waveform rendered using WaveSurfer.js
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 📦 Deployment
 
-To learn more about Next.js, take a look at the following resources:
+* **Frontend & Backend:** Vercel
+* **Storage:** Cloudflare R2
+* **Database:** PostgreSQL (Neon / Supabase)
+* **AI Model:** FastAPI + Serverless GPU
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 💡 Author
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Abhishek Roy**
